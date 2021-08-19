@@ -1,5 +1,6 @@
 namespace SpriteKind {
     export const PlayerAttack = create();
+    export const PlayerArrow = create();
     export const EnemyAttack = create();
 }
 
@@ -27,8 +28,8 @@ class Character {
         const ox = this.sprite.x - camera.drawOffsetX;
         const oy = this.sprite.y - camera.drawOffsetY;
 
-        const angle = this.heading / 180 * Math.PI;
-        const spread = 30 / 180 * Math.PI;
+        const angle = toRadians(this.heading);
+        const spread = toRadians(30);
         const radius = 10;
 
         target.drawLine(

@@ -62,7 +62,7 @@ function executeMove(character: Character, action: Block) {
 
     const distance = 32;
     const speed = distance / (action.duration / 1000);
-    angle *= Math.PI / 180;
+    angle = toRadians(angle);
 
     character.sprite.vx = Math.cos(angle) * speed;
     character.sprite.vy = Math.sin(angle) * speed;
@@ -100,14 +100,14 @@ function executeTurn(character: Character, action: Block) {
 function executeMeleeAttack(character: Character, action: Block) {
     const sweep = 140;
     const steps = 20;
-    const slice = (sweep / steps) * Math.PI / 180;
+    const slice = toRadians(sweep / steps);
     const pauseLength = action.duration / steps;
 
     const ox = character.attackImage.width >> 1;
     const oy = character.attackImage.height >> 1;
-    const handleOffset = 21 * Math.PI / 180;
+    const handleOffset = toRadians(21);
 
-    let angle = (character.heading - (sweep >> 1)) * Math.PI / 180;
+    let angle = toRadians(character.heading - (sweep >> 1));
     for (let i = 0; i < steps; i++) {
         // Blade
         drawThickLine(
@@ -142,14 +142,6 @@ function executeMeleeAttack(character: Character, action: Block) {
         pause(pauseLength);
         character.attackImage.fill(0);
     }
-}
-
-function drawThickLine(image: Image, x0: number, y0: number, x1: number, y1: number, color: number) {
-    image.drawLine(x0, y0, x1, y1, color);
-    image.drawLine(x0 + 1, y0, x1 + 1, y1, color);
-    image.drawLine(x0 - 1, y0, x1 - 1, y1, color);
-    image.drawLine(x0, y0 + 1, x1, y1 + 1, color);
-    image.drawLine(x0, y0 - 1, x1, y1 - 1, color);
 }
 
 function executeRangedAttack(character: Character, action: Block) {

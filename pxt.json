@@ -15,7 +15,9 @@
         "execute.ts",
         "scriptRenderer.ts",
         "tilemap.g.jres",
-        "tilemap.g.ts"
+        "tilemap.g.ts",
+        "arrows.ts",
+        "util.ts"
     ],
     "testFiles": [
         "test.ts"
