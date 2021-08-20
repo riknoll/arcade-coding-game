@@ -89,6 +89,11 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "playerImage"
     },
+    "image19": {
+        "data": "hwQIAAgAAAAAZmYAYGZmBmZmZmZmZmZmZmZmZmZmZmZgZmYGAGZmAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "enemyImage"
+    },
     "*": {
         "mimeType": "image/x-mkcd-f4",
         "dataEncoding": "base64",

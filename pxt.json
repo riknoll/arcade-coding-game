@@ -2,7 +2,8 @@
     "name": "arcade-coding-game",
     "description": "",
     "dependencies": {
-        "device": "*"
+        "device": "*",
+        "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.4.1"
     },
     "files": [
         "main.ts",
@@ -17,7 +18,10 @@
         "tilemap.g.jres",
         "tilemap.g.ts",
         "arrows.ts",
-        "util.ts"
+        "util.ts",
+        "battle.ts",
+        "playerState.ts",
+        "overlaps.ts"
     ],
     "testFiles": [
         "test.ts"

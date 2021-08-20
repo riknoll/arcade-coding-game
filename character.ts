@@ -2,8 +2,14 @@ namespace SpriteKind {
     export const PlayerAttack = create();
     export const PlayerArrow = create();
     export const EnemyAttack = create();
+    export const EnemyArrow = create();
 }
 
+let characters: Character[] = [];
+
+game.onUpdate(() => {
+    for (const char of characters) char.update();
+})
 
 class Character {
     sprite: Sprite;
@@ -11,17 +17,36 @@ class Character {
     heading: number;
     attackImage: Image;
     attackSprite: Sprite;
+    script: Block[];
+    currentAction: Block;
+    invincibleEndTime: number;
 
-    constructor(isEnemy: boolean) {
-        this.sprite = sprites.create(assets.image`playerImage`, isEnemy ? SpriteKind.Player : SpriteKind.Enemy);
+    constructor(public isEnemy: boolean) {
+        this.sprite = sprites.create(isEnemy ? assets.image`enemyImage` : assets.image`playerImage`, isEnemy ? SpriteKind.Enemy : SpriteKind.Player);
         this.renderable = scene.createRenderable(10, (target: Image, camera: scene.Camera) => {
             this.drawHeading(target, camera);
         }, () => !(this.sprite.flags & SpriteFlag.Invisible));
 
+        this.sprite.data["character"] = this;
+
         this.heading = 269;
         this.attackImage = image.create(32, 32);
-        this.attackSprite = sprites.create(this.attackImage, isEnemy ? SpriteKind.PlayerAttack : SpriteKind.EnemyAttack);
-        this.attackSprite.follow(this.sprite, 9999);
+        this.attackSprite = sprites.create(this.attackImage, isEnemy ? SpriteKind.EnemyAttack : SpriteKind.PlayerAttack);
+        
+        this.attackSprite.data["character"] = this;
+        characters.push(this);
+        let statusbar = statusbars.create(10, 1, StatusBarKind.Health)
+        statusbar.attachToSprite(this.sprite, 1, 0)
+        this.invincibleEndTime = 0;
+    }
+
+    update() {
+        this.attackSprite.x = this.sprite.x;
+        this.attackSprite.y = this.sprite.y;
+
+        if (this.sprite.flags & sprites.Flag.Destroyed) {
+            this.destroy();
+        }
     }
 
     drawHeading(target: Image, camera: scene.Camera) {
@@ -37,21 +62,35 @@ class Character {
             oy + Math.sin(angle) * radius,
             ox + Math.cos(angle + spread) * (radius - 3),
             oy + Math.sin(angle + spread) * (radius - 3),
-            3
+            this.isEnemy ? 6 : 3
         )
         target.drawLine(
             ox + Math.cos(angle) * radius,
             oy + Math.sin(angle) * radius,
             ox + Math.cos(angle - spread) * (radius - 3),
             oy + Math.sin(angle - spread) * (radius - 3),
-            3
+            this.isEnemy ? 6 : 3
         )
     }
 
     destroy() {
         this.sprite.destroy();
         this.renderable.destroy();
+        this.attackSprite.destroy();
         this.sprite = undefined;
         this.renderable = undefined;
+        this.attackSprite = undefined;
+        this.attackImage = undefined;
+        characters.removeElement(this);
+    }
+
+    execute(cancellationToken: () => boolean) {
+        while (true) {
+            for (const action of this.script) {
+                this.currentAction = action;
+                executeAction(this, action);
+                if (cancellationToken()) return;
+            }
+        }
     }
 }

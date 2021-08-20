@@ -14,3 +14,7 @@ function drawThickLine(image: Image, x0: number, y0: number, x1: number, y1: num
     image.drawLine(x0, y0 + 1, x1, y1 + 1, color);
     image.drawLine(x0, y0 - 1, x1, y1 - 1, color);
 }
+
+function getCharacterData(sprite: Sprite): Character {
+    return sprite.data["character"];
+}

@@ -1,5 +1,3 @@
-
-
 function executeAction(character: Character, action: Block) {
     switch (action.kind) {
         case BlockKind.MoveForward:
@@ -60,7 +58,7 @@ function executeMove(character: Character, action: Block) {
             break;
     }
 
-    const distance = 32;
+    const distance = 16;
     const speed = distance / (action.duration / 1000);
     angle = toRadians(angle);
 
@@ -145,7 +143,8 @@ function executeMeleeAttack(character: Character, action: Block) {
 }
 
 function executeRangedAttack(character: Character, action: Block) {
-
+    const arrow = new Arrow(character, 40 / scriptTimeModifier);
+    pause(action.duration);
 }
 
 function executeFireSpell(character: Character, action: Block) {
@@ -165,9 +164,9 @@ function executeGuard(character: Character, action: Block) {
 }
 
 function executeWait(character: Character, action: Block) {
-
+    pause(action.duration);
 }
 
 function executeMultiplier(character: Character, action: Block) {
-
+    
 }

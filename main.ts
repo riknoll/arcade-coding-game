@@ -1,9 +1,11 @@
 
 let scriptTimeModifier = 0.5;
 
-const c = new Character(false);
+scene.setBackgroundColor(13)
 
-const script = [
+
+const player = new Character(false);
+player.script = [
     getBlock(BlockKind.TurnClockwise),
     getBlock(BlockKind.TurnClockwise),
     getBlock(BlockKind.MoveForward),
@@ -11,12 +13,14 @@ const script = [
     getBlock(BlockKind.MoveRight),
     getBlock(BlockKind.MoveBackward),
     getBlock(BlockKind.MeleeAttack),
+    getBlock(BlockKind.RangedAttack),
     getBlock(BlockKind.TurnCounterClockwise),
+];
+
+const enemy = new Character(true);
+enemy.script = [
+    getBlock(BlockKind.TurnClockwise),
+    getBlock(BlockKind.RangedAttack),
 ]
-scene.setBackgroundColor(13)
 
-const scriptRenderer = new ScriptRenderer(script);
-
-while (true) {
-    scriptRenderer.execute(c);
-}
+runBattle(player, [enemy]);
