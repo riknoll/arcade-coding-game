@@ -3,7 +3,10 @@
     "description": "",
     "dependencies": {
         "device": "*",
-        "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.4.1"
+        "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.4.1",
+        "tilemaps": "github:microsoft/pxt-tilemaps#v1.11.0",
+        "arcade-story": "github:microsoft/arcade-storytelling#v1.0.2",
+        "arcade-text": "github:microsoft/arcade-text#v1.3.0"
     },
     "files": [
         "main.ts",
