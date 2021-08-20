@@ -48,8 +48,7 @@ class ScriptRenderer {
     }
 
     public get width() {
-        let width = 4 + ScriptRenderer.startImg.width;
-        this.showSelection = true;
+        let width = 0;
 
         for (let action of this.character.script.current) {
             width += action.icon.width + 1;
@@ -75,12 +74,11 @@ class ScriptRenderer {
             target.drawImage(action.icon, left, top);
             left += action.icon.width + 1;
         }
-
-        left += 4;
+        const startLeft = 151 - ScriptRenderer.startImg.width;
         if (this.currIndex === this.character.script.length()) {
-            this.drawSelection(target, left - 1, top - 1);
+            this.drawSelection(target, startLeft - 1, top - 1);
         }
-        target.drawImage(ScriptRenderer.startImg, left, top);
+        target.drawImage(ScriptRenderer.startImg, startLeft, top);
     }
 
     destroy() {
