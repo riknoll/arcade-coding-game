@@ -21,7 +21,8 @@
         "util.ts",
         "battle.ts",
         "playerState.ts",
-        "overlaps.ts"
+        "overlaps.ts",
+        "enemy.ts"
     ],
     "testFiles": [
         "test.ts"

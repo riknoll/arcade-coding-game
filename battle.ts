@@ -1,9 +1,26 @@
 
-function runBattle(player: Character, enemies: Character[]) {
-    scene.setTileMapLevel(assets.tilemap`level1`)
+function runBattle(player: Character, tm: tiles.TileMapData) {
+    scene.setTileMapLevel(tm)
+
+    tiles.placeOnRandomTile(player.sprite, assets.tile`player start`);
+
+    const enemies: Character[] = [];
+
+    const enemySpawns = tiles.getTilesByType(assets.tile`bad guy 1`)
+        .concat(tiles.getTilesByType(assets.tile`bad guy 2`))
+        .concat(tiles.getTilesByType(assets.tile`bad guy 3`))
+        .concat(tiles.getTilesByType(assets.tile`bad guy 4`))
+        .concat(tiles.getTilesByType(assets.tile`bad guy 5`))
+        .concat(tiles.getTilesByType(assets.tile`bad guy 6`))
+
+    for (const tile of enemySpawns) {
+        enemies.push(createEnemyAtLocation(tile));
+    }
+
+
+
+    
     scene.centerCameraAt(88, 68);
-    player.sprite.x = 88;
-    player.sprite.bottom = 104;
     player.heading = 270;
 
 

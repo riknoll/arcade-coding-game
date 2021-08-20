@@ -10,10 +10,10 @@ class Arrow {
 
         this.sprite.vx = Math.cos(toRadians(this.heading)) * speed;
         this.sprite.vy = Math.sin(toRadians(this.heading)) * speed;
-        this.sprite.data["_arrow"] = this;
+        this.sprite.data["arrow"] = this;
         this.sprite.data["character"] = character;
         this.sprite.data["action"] = character.currentAction;
-        this.sprite.setFlag(SpriteFlag.DestroyOnWall, true);
+        this.sprite.data["remainingBounces"] = 3;
     }
 
     set heading(val: number) {

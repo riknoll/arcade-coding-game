@@ -11,6 +11,17 @@ game.onUpdate(() => {
     for (const char of characters) char.update();
 })
 
+
+enum Modifier {
+    BouncyArrows = 1 << 0,
+    SpinAttack = 1 << 1,
+    DeflectOnWalls = 1 << 2,
+    FastMove = 1 << 3,
+    FastTurn = 1 << 4,
+    ExtendedMelee = 1 << 5,
+    MeleeProjectile = 1 << 6,
+}
+
 class Character {
     sprite: Sprite;
     renderable: scene.Renderable;
@@ -20,6 +31,8 @@ class Character {
     script: Block[];
     currentAction: Block;
     invincibleEndTime: number;
+
+    modifiers: number;
 
     constructor(public isEnemy: boolean) {
         this.sprite = sprites.create(isEnemy ? assets.image`enemyImage` : assets.image`playerImage`, isEnemy ? SpriteKind.Enemy : SpriteKind.Player);
@@ -38,6 +51,7 @@ class Character {
         let statusbar = statusbars.create(10, 1, StatusBarKind.Health)
         statusbar.attachToSprite(this.sprite, 1, 0)
         this.invincibleEndTime = 0;
+        this.modifiers = 0;
     }
 
     update() {
@@ -88,9 +102,19 @@ class Character {
         while (true) {
             for (const action of this.script) {
                 this.currentAction = action;
+                this.attackSprite.data["action"] = action;
                 executeAction(this, action);
                 if (cancellationToken()) return;
             }
         }
+    }
+
+    setModifier(modifier: Modifier, on: boolean) {
+        if (on) this.modifiers |= modifier;
+        else this.modifiers = ~(~this.modifiers | modifier);
+    }
+
+    hasModifier(modifier: Modifier) {
+        return !!(this.modifiers & modifier);
     }
 }

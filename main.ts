@@ -1,5 +1,5 @@
 
-let scriptTimeModifier = 0.5;
+let scriptTimeModifier = 2;
 
 scene.setBackgroundColor(13)
 
@@ -17,10 +17,6 @@ player.script = [
     getBlock(BlockKind.TurnCounterClockwise),
 ];
 
-const enemy = new Character(true);
-enemy.script = [
-    getBlock(BlockKind.TurnClockwise),
-    getBlock(BlockKind.RangedAttack),
-]
+player.setModifier(Modifier.DeflectOnWalls, true);
 
-runBattle(player, [enemy]);
+runBattle(player, assets.tilemap`level1`);

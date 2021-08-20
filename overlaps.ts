@@ -1,26 +1,17 @@
 const INVINCIBILITY_TIME = 500;
 
-sprites.onOverlap(SpriteKind.Player, SpriteKind.EnemyAttack, (attacked, attack) => {
-    const attacker = getCharacterData(attack);
-    dealDamage(
-        attacker,
-        getCharacterData(attacked),
-        attacker.currentAction,
-        Math.atan2(attack.y - attacked.y, attack.x - attacked.x)
-    );
-});
+sprites.onOverlap(SpriteKind.Player, SpriteKind.EnemyAttack, onAttackOverlap);
+sprites.onOverlap(SpriteKind.Enemy, SpriteKind.PlayerAttack, onAttackOverlap);
+sprites.onOverlap(SpriteKind.Player, SpriteKind.EnemyArrow, onAttackOverlap);
+sprites.onOverlap(SpriteKind.Player, SpriteKind.PlayerArrow, onAttackOverlap);
 
-sprites.onOverlap(SpriteKind.Enemy, SpriteKind.PlayerAttack, (attacked, attack) => {
-    const attacker = getCharacterData(attack);
-    dealDamage(
-        attacker,
-        getCharacterData(attacked),
-        attacker.currentAction,
-        Math.atan2(attack.y - attacked.y, attack.x - attacked.x)
-    );
-});
+scene.onHitWall(SpriteKind.PlayerArrow, onArrowHitWall)
+scene.onHitWall(SpriteKind.EnemyArrow, onArrowHitWall)
+scene.onHitWall(SpriteKind.Player, onCharacterHitWall)
+scene.onHitWall(SpriteKind.Enemy, onCharacterHitWall)
 
-sprites.onOverlap(SpriteKind.Player, SpriteKind.EnemyArrow, (attacked, attack) => {
+
+function onAttackOverlap(attacked: Sprite, attack: Sprite) {
     const attacker = getCharacterData(attack);
     dealDamage(
         attacker,
@@ -28,20 +19,8 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.EnemyArrow, (attacked, attack) =
         attack.data["action"],
         Math.atan2(attack.y - attacked.y, attack.x - attacked.x)
     );
-    attack.destroy();
-})
-
-sprites.onOverlap(SpriteKind.Player, SpriteKind.PlayerArrow, (attacked, attack) => {
-    const attacker = getCharacterData(attack);
-    dealDamage(
-        attacker,
-        getCharacterData(attacked),
-        attack.data["action"],
-        Math.atan2(attack.y - attacked.y, attack.x - attacked.x)
-    );
-    attack.destroy();
-})
-
+    if (attack.data["arrow"]) attack.destroy();
+}
 
 function dealDamage(attacker: Character, attacked: Character, action: Block, angle: number) {
     if (control.millis() < attacked.invincibleEndTime) return;
@@ -62,4 +41,34 @@ function dealDamage(attacker: Character, attacked: Character, action: Block, ang
 
     statusbars.getStatusBarAttachedTo(StatusBarKind.Health, attacked.sprite).value -= damage;
     attacked.invincibleEndTime = control.millis() + INVINCIBILITY_TIME * scriptTimeModifier;
+}
+
+function onArrowHitWall(arrow: Sprite) {
+    const character = getCharacterData(arrow);
+    if (character.hasModifier(Modifier.BouncyArrows)) {
+        arrow.data["remainingBounces"] -= 1;
+
+        if (!arrow.data["remainingBounces"]){
+            arrow.destroy();
+            return;
+        }
+
+        if (arrow.isHittingTile(CollisionDirection.Left) || arrow.isHittingTile(CollisionDirection.Right)) arrow.vx = -arrow.vx;
+        if (arrow.isHittingTile(CollisionDirection.Top) || arrow.isHittingTile(CollisionDirection.Bottom)) arrow.vy = -arrow.vy;
+
+        (arrow.data["arrow"] as Arrow).heading = Math.atan2(arrow.vy, arrow.vx) * 180 / Math.PI;
+    }
+    else {
+        arrow.destroy();
+    }
+}
+
+function onCharacterHitWall(sprite: Sprite) {
+    const character = getCharacterData(sprite);
+    if (character.hasModifier(Modifier.DeflectOnWalls)) {
+        if (sprite.isHittingTile(CollisionDirection.Left) || sprite.isHittingTile(CollisionDirection.Right)) sprite.vx = -sprite.vx;
+        if (sprite.isHittingTile(CollisionDirection.Top) || sprite.isHittingTile(CollisionDirection.Bottom)) sprite.vy = -sprite.vy;
+
+        character.heading = Math.atan2(sprite.vy, sprite.vx) * 180 / Math.PI;
+    }
 }
