@@ -8,6 +8,7 @@ function executeAction(character: Character, action: Block) {
             break;
         case BlockKind.TurnClockwise:
         case BlockKind.TurnCounterClockwise:
+        case BlockKind.TurnRandom:
         case BlockKind.Aim:
             executeTurn(character, action);
             break;
@@ -78,6 +79,9 @@ function executeTurn(character: Character, action: Block) {
             break;
         case BlockKind.TurnCounterClockwise:
             targetAngle = character.heading - 45;
+            break;
+        case BlockKind.TurnRandom:
+            targetAngle = character.heading + Math.randomRange(-60, 60);
             break;
         case BlockKind.Aim:
             // TODO

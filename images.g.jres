@@ -94,6 +94,11 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "enemyImage"
     },
+    "image20": {
+        "data": "hwQLAAsAAABmZmZmZgYAAHZ3d3d3BgAAdnd3ZncGAAB2d3Z3dgYAAHZnZnd2BgAAdmZmdnYGAAB2d3Z3dgYAAHZ/Z2Z3BgAA9nd/f3cGAAB2/3d3dwYAAGZmZmZmBgAA",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "turnRandom"
+    },
     "*": {
         "mimeType": "image/x-mkcd-f4",
         "dataEncoding": "base64",

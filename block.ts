@@ -5,6 +5,7 @@ enum BlockKind {
     MoveRight,
     TurnClockwise,
     TurnCounterClockwise,
+    TurnRandom,
     MeleeAttack,
     RangedAttack,
     FireSpell,
@@ -84,6 +85,13 @@ function getBlock(kind: BlockKind) {
                 kind,
                 assets.image`turnCounterClockwise`,
                 "Turn counter-clockwise by 45 degrees",
+                200
+            );
+        case BlockKind.TurnRandom:
+            return makeBlock(
+                kind,
+                assets.image`turnRandom`,
+                "Turn in a random direction",
                 200
             );
         case BlockKind.MeleeAttack:

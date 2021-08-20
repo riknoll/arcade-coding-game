@@ -104,7 +104,7 @@ class Character {
                 this.currentAction = action;
                 this.attackSprite.data["action"] = action;
                 executeAction(this, action);
-                if (cancellationToken()) return;
+                if (cancellationToken() || !this.sprite) return;
             }
         }
     }

@@ -2,6 +2,11 @@
 function runBattle(player: Character, tm: tiles.TileMapData) {
     scene.setTileMapLevel(tm)
 
+    for (const sprite of sprites.allOfKind(SpriteKind.Enemy)) {
+        getCharacterData(sprite).destroy();
+    }
+    statusbars.getStatusBarAttachedTo(StatusBarKind.Health, player.sprite).value = 9999;
+
     tiles.placeOnRandomTile(player.sprite, assets.tile`player start`);
 
     const enemies: Character[] = [];

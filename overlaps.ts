@@ -3,12 +3,20 @@ const INVINCIBILITY_TIME = 500;
 sprites.onOverlap(SpriteKind.Player, SpriteKind.EnemyAttack, onAttackOverlap);
 sprites.onOverlap(SpriteKind.Enemy, SpriteKind.PlayerAttack, onAttackOverlap);
 sprites.onOverlap(SpriteKind.Player, SpriteKind.EnemyArrow, onAttackOverlap);
-sprites.onOverlap(SpriteKind.Player, SpriteKind.PlayerArrow, onAttackOverlap);
+sprites.onOverlap(SpriteKind.Enemy, SpriteKind.PlayerArrow, onAttackOverlap);
 
 scene.onHitWall(SpriteKind.PlayerArrow, onArrowHitWall)
 scene.onHitWall(SpriteKind.EnemyArrow, onArrowHitWall)
 scene.onHitWall(SpriteKind.Player, onCharacterHitWall)
 scene.onHitWall(SpriteKind.Enemy, onCharacterHitWall)
+
+statusbars.onZero(StatusBarKind.Health, status => {
+    const sprite = status.spriteAttachedTo();
+    const character = getCharacterData(sprite);
+
+    if (character.isEnemy)
+        sprite.destroy();
+})
 
 
 function onAttackOverlap(attacked: Sprite, attack: Sprite) {
