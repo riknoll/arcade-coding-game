@@ -22,26 +22,25 @@ function runBattle(player: Character, tm: tiles.TileMapData) {
         enemies.push(createEnemyAtLocation(tile));
     }
 
-
-
-    
     scene.centerCameraAt(88, 68);
     player.heading = 270;
 
 
     const renderer = new ScriptRenderer(player);
-
     let battleComplete = false;
-    let cancellationToken = () => battleComplete;
+    registerRendererControls(renderer, startScript);
 
-    control.runInParallel(() => {
-        player.execute(cancellationToken)
-    })
-
-    for (const enemy of enemies) {
+    function startScript() {
+        let cancellationToken = () => battleComplete;
         control.runInParallel(() => {
-            enemy.execute(cancellationToken);
+            player.execute(cancellationToken)
         })
+
+        for (const enemy of enemies) {
+            control.runInParallel(() => {
+                enemy.execute(cancellationToken);
+            })
+        }
     }
 
     pauseUntil(() => sprites.allOfKind(SpriteKind.Enemy).length === 0);

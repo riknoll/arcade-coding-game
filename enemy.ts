@@ -28,10 +28,10 @@ function createEnemyAtLocation(location: tiles.Location) {
 function createBadGuy1() {
     const enemy = new Character(true);
     enemy.heading = 90;
-    enemy.script = [
+    enemy.script = new ScriptBag([
         getBlock(BlockKind.TurnClockwise),
         getBlock(BlockKind.RangedAttack)
-    ]
+    ]);
 
     return enemy;
 }
@@ -39,10 +39,10 @@ function createBadGuy1() {
 function createBadGuy2() {
     const enemy = new Character(true);
     enemy.heading = 90;
-    enemy.script = [
+    enemy.script = new ScriptBag([
         getBlock(BlockKind.TurnClockwise),
         getBlock(BlockKind.RangedAttack)
-    ]
+    ]);
 
     return enemy;
 }
@@ -50,10 +50,10 @@ function createBadGuy2() {
 function createBadGuy3() {
     const enemy = new Character(true);
     enemy.heading = 90;
-    enemy.script = [
+    enemy.script = new ScriptBag([
         getBlock(BlockKind.TurnClockwise),
         getBlock(BlockKind.RangedAttack)
-    ]
+    ]);
 
     return enemy;
 }
@@ -61,10 +61,10 @@ function createBadGuy3() {
 function createBadGuy4() {
     const enemy = new Character(true);
     enemy.heading = 90;
-    enemy.script = [
+    enemy.script = new ScriptBag([
         getBlock(BlockKind.TurnClockwise),
         getBlock(BlockKind.RangedAttack)
-    ]
+    ]);
 
     return enemy;
 }
@@ -72,10 +72,10 @@ function createBadGuy4() {
 function createBadGuy5() {
     const enemy = new Character(true);
     enemy.heading = 90;
-    enemy.script = [
+    enemy.script = new ScriptBag([
         getBlock(BlockKind.TurnClockwise),
         getBlock(BlockKind.RangedAttack)
-    ]
+    ]);
 
     return enemy;
 }
@@ -83,10 +83,10 @@ function createBadGuy5() {
 function createBadGuy6() {
     const enemy = new Character(true);
     enemy.heading = 90;
-    enemy.script = [
+    enemy.script = new ScriptBag([
         getBlock(BlockKind.TurnClockwise),
         getBlock(BlockKind.RangedAttack)
-    ]
+    ]);
 
     return enemy;
 }

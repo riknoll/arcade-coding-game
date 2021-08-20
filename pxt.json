@@ -22,7 +22,9 @@
         "battle.ts",
         "playerState.ts",
         "overlaps.ts",
-        "enemy.ts"
+        "enemy.ts",
+        "scriptBag.ts",
+        "control.ts"
     ],
     "testFiles": [
         "test.ts"

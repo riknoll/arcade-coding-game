@@ -1,16 +1,15 @@
-
 let scriptTimeModifier = 0.1;
 
 scene.setBackgroundColor(13)
 
 
 const player = new Character(false);
-player.script = [
+player.script = new ScriptBag([
     getBlock(BlockKind.MoveForward),
     getBlock(BlockKind.MeleeAttack),
     getBlock(BlockKind.RangedAttack),
     getBlock(BlockKind.TurnRandom),
-];
+]);
 
 player.setModifier(Modifier.DeflectOnWalls, true);
 
@@ -27,4 +26,4 @@ control.runInParallel(() => {
     for (const level of levels) {
         runBattle(player, level);
     }
-})
+});

@@ -28,7 +28,8 @@ class Character {
     heading: number;
     attackImage: Image;
     attackSprite: Sprite;
-    script: Block[];
+    script: ScriptBag;
+
     currentAction: Block;
     invincibleEndTime: number;
 
@@ -100,7 +101,7 @@ class Character {
 
     execute(cancellationToken: () => boolean) {
         while (true) {
-            for (const action of this.script) {
+            for (const action of this.script.current) {
                 this.currentAction = action;
                 this.attackSprite.data["action"] = action;
                 executeAction(this, action);
