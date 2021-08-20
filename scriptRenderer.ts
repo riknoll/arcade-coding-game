@@ -13,6 +13,19 @@ class ScriptRenderer {
         7 6 6 6 6 6 6 6 6 6 7
         7 7 7 7 7 7 7 7 7 7 7
     `;
+    protected static emptyIcon = img`
+        c c c c c c c c c c c
+        c b b b b b b b b b c
+        c b b b b b b b b b c
+        c b b b b b b b b b c
+        c b b b b b b b b b c
+        c b b b b b b b b b c
+        c b b b b b b b b b c
+        c b b b b b b b b b c
+        c b b b b b b b b b c
+        c b b b b b b b b b c
+        c c c c c c c c c c c
+    `;
     protected static selectArrow = img`
         5 5 5 5 5
         5 5 5 5 5
@@ -36,7 +49,7 @@ class ScriptRenderer {
         5 5 5 5 5 5 5 5 5 5 5 5 5
     `;
     protected currIndex: number;
-    protected showSelection: boolean;
+    protected editMode: boolean;
 
     constructor(protected character: Character) {
         this.renderable = scene.createRenderable(11, (target, camera) => {
@@ -44,7 +57,7 @@ class ScriptRenderer {
         });
 
         this.currIndex = this.character.script.length();
-        this.showSelection = true;
+        this.editMode = true;
     }
 
     public get width() {
@@ -63,6 +76,9 @@ class ScriptRenderer {
         const top = 105;
         let left = 80 - (this.width >> 1);
 
+        /**
+         * Render script
+         **/
         for (let i = 0; i < script.current.length; i++) {
             const action = script.current[i];
             if (action === this.character.currentAction) {
@@ -79,15 +95,60 @@ class ScriptRenderer {
             target.drawImage(action.icon, left, top);
             left += action.icon.width + 1;
         }
-        const startLeft = 151 - ScriptRenderer.startImg.width;
-        if (this.currIndex === script.length()) {
-            if (script.held) {
-                this.drawSelection(target, left, top);
-            } else {
-                this.drawSelection(target, startLeft - 1, top - 1);
+
+        if (this.editMode) {
+            /**
+             * Render bag
+             **/
+            let bagLeft = 10;
+            let bagTop = 80;
+            let bagWidth = 6;
+            let bagHeight = 0;
+
+            for (let i = 0; i < script.maxBagSize; i++) {
+                const action = script.bag[i];
+                const toDraw = action && action.icon || ScriptRenderer.emptyIcon;
+                bagWidth += toDraw.width + 1;
+                bagHeight = Math.max(toDraw.height + 6, bagHeight);
             }
+            bagHeight += image.font5.charHeight + 1;
+
+            target.fillRect(bagLeft, bagTop, bagWidth, bagHeight, 0xD);
+            target.drawRect(bagLeft, bagTop, bagWidth, bagHeight, 0xC);
+            bagLeft += 3;
+            bagTop += 3;
+
+            target.print("BAG", bagLeft, bagTop, 0xC, image.font5);
+            bagTop += image.font5.charHeight + 1;
+
+            for (let i = 0; i < script.maxBagSize; i++) {
+                const action = script.bag[i];
+                const toDraw = action && action.icon || ScriptRenderer.emptyIcon;
+                if (this.currIndex === i) {
+                    if (script.held) {
+                        this.drawSelection(target, bagLeft + (toDraw.width / 2), bagTop);
+                    } else {
+                        this.drawSelection(target, bagLeft - 1, bagTop - 1);
+                    }
+                }
+
+                target.drawImage(toDraw, bagLeft, bagTop);
+                bagLeft += toDraw.width + 1;
+            }
+
+            /**
+             * Render start button
+             **/
+            const startLeft = 151 - ScriptRenderer.startImg.width;
+            if (this.currIndex === script.length()) {
+                if (script.held) {
+                    this.drawSelection(target, left, top);
+                } else {
+                    this.drawSelection(target, startLeft - 1, top - 1);
+                }
+            }
+            target.drawImage(ScriptRenderer.startImg, startLeft, top);
         }
-        target.drawImage(ScriptRenderer.startImg, startLeft, top);
     }
 
     destroy() {
@@ -95,7 +156,7 @@ class ScriptRenderer {
     }
 
     drawSelection(target: Image, left: number, top: number) {
-        if (!this.showSelection) return;
+        if (!this.editMode) return;
         if (this.character.script.held) {
             const heldIcon = this.character.script.held.icon;
             top -= ScriptRenderer.selectArrow.height;
@@ -131,24 +192,18 @@ class ScriptRenderer {
 
     protected maxIndex(): number {
         return this.character.script.length();
-        // if (this.character.script.held) {
-        //     return this.character.script.length() - 1;
-        // } else {
-        //     return this.character.script.length()
-        // }
     }
 
     aButtonDown(): boolean {
-        if (this.currIndex === this.character.script.length()) {
-            this.showSelection = false;
+        const script = this.character.script;
+        if (script.held) {
+            script.release(this.currIndex);
+        } else if (this.currIndex === script.length()) {
+            this.editMode = false;
             return true;
         } else {
-            this.character.script.grab(this.currIndex);
-            return false;
+            script.grab(this.currIndex);
         }
-    }
-
-    aButtonRelease() { 
-        this.character.script.release(this.currIndex);
+        return false;
     }
 }

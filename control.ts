@@ -8,9 +8,6 @@ function registerRendererControls(renderer: ScriptRenderer, startBattle: () => v
             startBattle();
         }
     });
-    registerHandler(controller.A, () => {
-        renderer.aButtonRelease();
-    }, ControllerButtonEvent.Released);
     registerHandler(controller.up, () => {
         renderer.upButtonDown();
     });
