@@ -1,4 +1,5 @@
-let scriptTimeModifier = 0.1;
+
+let scriptTimeModifier = 1;
 
 scene.setBackgroundColor(13)
 
@@ -12,6 +13,8 @@ player.script = new ScriptBag([
 ]);
 
 player.setModifier(Modifier.DeflectOnWalls, true);
+player.setModifier(Modifier.BouncyArrows, false);
+
 
 
 const levels = [
@@ -26,4 +29,15 @@ control.runInParallel(() => {
     for (const level of levels) {
         runBattle(player, level);
     }
-});
+})
+
+
+controller.up.onEvent(ControllerButtonEvent.Pressed, () => {
+    scriptTimeModifier -= 0.1;
+
+    if (scriptTimeModifier < 0.1) scriptTimeModifier = 0.1
+})
+
+controller.down.onEvent(ControllerButtonEvent.Pressed, () => {
+    scriptTimeModifier += 0.1;
+})

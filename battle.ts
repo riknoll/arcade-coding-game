@@ -21,7 +21,7 @@ function runBattle(player: Character, tm: tiles.TileMapData) {
     for (const tile of enemySpawns) {
         enemies.push(createEnemyAtLocation(tile));
     }
-
+    
     scene.centerCameraAt(88, 68);
     player.heading = 270;
 

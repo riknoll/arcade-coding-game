@@ -30,6 +30,7 @@ function createBadGuy1() {
     enemy.heading = 90;
     enemy.script = new ScriptBag([
         getBlock(BlockKind.TurnClockwise),
+        getBlock(BlockKind.Wait),
         getBlock(BlockKind.RangedAttack)
     ]);
 
