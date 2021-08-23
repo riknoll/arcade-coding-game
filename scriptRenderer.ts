@@ -1,4 +1,4 @@
-class ScriptRenderer {
+class ScriptRenderer implements Screen {
     protected renderable: scene.Renderable;
     protected static startImg = img`
         7 7 7 7 7 7 7 7 7 7 7
@@ -60,6 +60,8 @@ class ScriptRenderer {
         this.currIndex = this.character.script.length();
         this.editMode = true;
         this.updateInfo();
+
+        if (character.script.held) this.hideInfo(true);
     }
 
     public get width() {
@@ -249,19 +251,23 @@ class ScriptRenderer {
     drawInfoBox(target: Image) {
         if (this.infoHidden) return;
         const top = 38;
-        target.fillRect(10, top, 100, 40, 0xc)
-        target.fillRect(11, top + 1, 98, 38, 0xd)
-        target.fillRect(13, top + 11, 94, 1, 0xb)
+        const left = 10;
+        target.fillRect(left, top, 100, 40, 0xc)
+        target.fillRect(left + 1, top + 1, 98, 38, 0xd)
+        target.fillRect(left + 3, top + 11, 94, 1, 0xb)
     }
 
     setInfoText(title: string, description: string) {
+        const top = 38;
+        const left = 10;
+
         story.clearAllText();
         story.setPagePauseLength(9999999, 9999999);
         control.runInParallel(() => {
-            story.printDialog(title, 18, 73, 90, 16, 0xc, 0, story.TextSpeed.VeryFast);
+            story.printDialog(title, left + 8, top + 35, 90, 16, 0xc, 0, story.TextSpeed.VeryFast);
         })
         control.runInParallel(() => {
-            story.printDialog(description, 60, 93, 90, 100, 0xc, 0, story.TextSpeed.VeryFast);
+            story.printDialog(description, left + 50, top + 55, 90, 100, 0xc, 0, story.TextSpeed.VeryFast);
         })
     }
 }

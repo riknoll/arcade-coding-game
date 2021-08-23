@@ -55,4 +55,29 @@ function runBattle(player: Character, tm: tiles.TileMapData) {
 
     pauseUntil(() => sprites.allOfKind(SpriteKind.Enemy).length === 0);
     battleComplete = true;
+
+    renderer.destroy();
+
+    let rewardsSelected = false;
+
+    const rewards = new RewardScreen([
+        getBlock(BlockKind.Aim),
+        getArtifact(Modifier.BouncyArrows),
+        getArtifact(Modifier.SpinAttack)
+    ]);
+
+    registerRendererControls(rewards, () => rewardsSelected = true);
+    pauseUntil(() => rewardsSelected)
+
+    const reward = rewards.rewards[rewards.currIndex];
+
+    if ((reward as any).duration) {
+        player.script.held = (reward as any as Block);
+    }
+    else {
+        const modifier = (reward as any as Artifact).modifier;
+        player.setModifier(modifier, true);
+    }
+
+    rewards.destroy();
 }

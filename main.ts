@@ -1,5 +1,5 @@
 
-let scriptTimeModifier = 0.5
+let scriptTimeModifier = 0.2
 
 scene.setBackgroundColor(13)
 

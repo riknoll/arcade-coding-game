@@ -99,6 +99,31 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "turnRandom"
     },
+    "image21": {
+        "data": "hwQLAAsAAAAAAAAAAAAAAAABALsAAAAAEMHMzAAAAAAAAQC7AAAAAAAAAQC7AAAAABDBzMwAAAAAAAEAuwAAAAABALsAAAAAEMHMzAAAAAAAAQC7AAAAAAAAAAAAAAAA",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "bouncyArrows"
+    },
+    "image22": {
+        "data": "hwQLAAsAAAAAAAAKAAoAAAAAAKCgAAAAAAAAEQoAAAAAABDRoQAAAAAAER0BCgAAABDREQAAAAAAER0BAAAAABDREQAAAAAAER0BAAAAAADREQAAAAAAABEBAAAAAAAA",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "biggerSword"
+    },
+    "image23": {
+        "data": "hwQLAAsAAAAAAAAAAAAAAACwu7sAAAAAABvBEQsAAACwERERsQAAALARERGxAAAAsCFSiLEAAACwERERsQAAALARERGxAAAAABvBEQsAAAAAsLu7AAAAAAAAAAAAAAAA",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "compass"
+    },
+    "image24": {
+        "data": "hwQLAAsAAAAAAAAAAAAAAAAABQUAAAAAALtVVQQAAAAAu0tEBAAAAAAAAEsAAAAAAAAARAAAAAAAAABLBAAAAAAAAEsEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "wingedSandals"
+    },
+    "image25": {
+        "data": "hwQLAAsAAAAAcAAAAAAAAABwBwAAAAAAAHd3YAAAAABwcAcABgAAAAdwAABgAAAABwAAAGAAAAAHAAAGYAAAAHAAYAYGAAAAAAdmZgAAAAAAAGAGAAAAAAAAAAYAAAAA",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "spinAttack"
+    },
     "*": {
         "mimeType": "image/x-mkcd-f4",
         "dataEncoding": "base64",

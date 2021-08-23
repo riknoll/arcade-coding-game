@@ -1,5 +1,14 @@
+interface Screen {
+    aButtonDown(): boolean;
+    upButtonDown(): void;
+    downButtonDown(): void;
+    leftButtonDown(): void;
+    rightButtonDown(): void;
+    destroy(): void;
+}
 
-function registerRendererControls(renderer: ScriptRenderer, startBattle: () => void) {
+
+function registerRendererControls(renderer: Screen, startBattle: () => void) {
     let battleStarted = false;
 
     registerHandler(controller.A, () => {

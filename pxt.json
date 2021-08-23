@@ -27,7 +27,8 @@
         "overlaps.ts",
         "enemy.ts",
         "scriptBag.ts",
-        "control.ts"
+        "control.ts",
+        "rewards.ts"
     ],
     "testFiles": [
         "test.ts"

@@ -37,7 +37,7 @@ function dealDamage(attacker: Character, attacked: Character, action: Block, ang
 
     switch (action.kind) {
         case BlockKind.MeleeAttack:
-            damage = 5;
+            damage = 20;
             break;
         case BlockKind.RangedAttack:
             damage = 5;

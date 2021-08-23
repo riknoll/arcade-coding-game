@@ -19,10 +19,15 @@ enum BlockKind {
     Aim
 }
 
-class Block {
+class Item {
     icon: Image;
     description: string;
     name: string;
+
+    constructor() { }
+}
+
+class Block extends Item {
     _duration: number;
 
     get duration() {
@@ -33,7 +38,9 @@ class Block {
         this._duration = val;
     }
 
-    constructor(public kind: BlockKind) { }
+    constructor(public kind: BlockKind) {
+        super();
+    }
 }
 
 function makeBlock(kind: BlockKind, icon: Image, name: string, description: string, duration: number) {
