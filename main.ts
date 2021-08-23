@@ -1,5 +1,5 @@
 
-let scriptTimeModifier = 1;
+let scriptTimeModifier = 0.5
 
 scene.setBackgroundColor(13)
 
@@ -9,7 +9,7 @@ player.script = new ScriptBag([
     getBlock(BlockKind.MoveForward),
     getBlock(BlockKind.MeleeAttack),
     getBlock(BlockKind.RangedAttack),
-    getBlock(BlockKind.TurnRandom),
+    getBlock(BlockKind.TurnCounterClockwise),
 ]);
 
 player.setModifier(Modifier.DeflectOnWalls, true);

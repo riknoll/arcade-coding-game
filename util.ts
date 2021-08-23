@@ -24,7 +24,7 @@ function getCharacterData(sprite: Sprite): Character {
 }
 
 function findClosestSprite(sprite: Sprite, others: Sprite[]) {
-    let min = 0;
+    let min = 9999;
     let closest: Sprite;
 
     for (const otherSprite of others) {
@@ -35,4 +35,9 @@ function findClosestSprite(sprite: Sprite, others: Sprite[]) {
         }
     }
     return closest;
+}
+
+function normalizeAngle(degrees: number) {
+    while (degrees < 0) degrees += 360;
+    return degrees % 360;
 }

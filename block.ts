@@ -22,6 +22,7 @@ enum BlockKind {
 class Block {
     icon: Image;
     description: string;
+    name: string;
     _duration: number;
 
     get duration() {
@@ -35,9 +36,10 @@ class Block {
     constructor(public kind: BlockKind) { }
 }
 
-function makeBlock(kind: BlockKind, icon: Image, description: string, duration: number) {
+function makeBlock(kind: BlockKind, icon: Image, name: string, description: string, duration: number) {
     const result = new Block(kind);
     result.icon = icon;
+    result.name = name;
     result.description = description;
     result.duration = duration;
     return result;
@@ -49,76 +51,87 @@ function getBlock(kind: BlockKind) {
             return makeBlock(
                 kind,
                 assets.image`moveForward`,
-                "Move forward",
+                "Move Forward",
+                "Take a few steps forward",
                 800
             );
         case BlockKind.MoveLeft:
             return makeBlock(
                 kind,
                 assets.image`moveLeft`,
-                "Move left",
+                "Move Left",
+                "Take a few steps to the left",
                 800
             );
         case BlockKind.MoveRight:
             return makeBlock(
                 kind,
                 assets.image`moveRight`,
-                "Move right",
+                "Move Right",
+                "Take a few steps to the right",
                 800
             );
         case BlockKind.MoveBackward:
             return makeBlock(
                 kind,
                 assets.image`moveBack`,
-                "Move backward",
+                "Move Backward",
+                "Take a few steps backward",
                 800
             );
         case BlockKind.TurnClockwise:
             return makeBlock(
                 kind,
                 assets.image`turnClockwise`,
-                "Turn clockwise by 45 degrees",
+                "CW Turn",
+                "Rotate clockwise by 45 degrees",
                 200
             );
         case BlockKind.TurnCounterClockwise:
             return makeBlock(
                 kind,
                 assets.image`turnCounterClockwise`,
-                "Turn counter-clockwise by 45 degrees",
+                "CCW Turn",
+                "Rotate counter clockwise by 45 degrees",
                 200
             );
         case BlockKind.TurnRandom:
             return makeBlock(
                 kind,
                 assets.image`turnRandom`,
-                "Turn in a random direction",
+                "Random Turn",
+                "Rotate a random amount in a random direction",
                 200
             );
         case BlockKind.MeleeAttack:
             return makeBlock(
                 kind,
                 assets.image`melee`,
-                "Use a melee attack",
+                "Sword Attack",
+                "Swing your sword in an arc",
                 300
             );
         case BlockKind.RangedAttack:
             return makeBlock(
                 kind,
                 assets.image`arrow`,
-                "Use a ranged attack",
+                "Arrow",
+                "Launch an arrow forward",
                 200
             );
         case BlockKind.FireSpell:
             return makeBlock(
                 kind,
                 assets.image`fireBall`,
-                "Launch a fireball forwards",
+                "Fire Spell",
+                "Launch a fireball forward",
                 500
             );
         case BlockKind.IceSpell:
             return makeBlock(
                 kind,
                 assets.image`ice`,
+                "Ice Spell",
                 "Create an icy aura that damages enemies around you",
                 500
             );
@@ -126,6 +139,7 @@ function getBlock(kind: BlockKind) {
             return makeBlock(
                 kind,
                 assets.image`lightning`,
+                "Lightning Spell",
                 "Launch a lightning strike that jumps between enemies",
                 500
             );
@@ -133,20 +147,23 @@ function getBlock(kind: BlockKind) {
             return makeBlock(
                 kind,
                 assets.image`guard`,
-                "Stand still and guard to reduce damage for one second",
+                "Guard",
+                "Put up your guard to reduce damage for a short time",
                 500
             );
         case BlockKind.Wait:
             return makeBlock(
                 kind,
                 assets.image`wait`,
-                "Stand still for one second",
+                "Wait",
+                "Stand still and do nothing",
                 500
             );
         case BlockKind.TimesTwo:
             return makeBlock(
                 kind,
                 assets.image`timesTwo`,
+                "Times Two",
                 "Execute the next action twice",
                 100
             );
@@ -154,6 +171,7 @@ function getBlock(kind: BlockKind) {
             return makeBlock(
                 kind,
                 assets.image`timesThree`,
+                "Times Three",
                 "Execute the next action three times",
                 100
             );
@@ -161,6 +179,7 @@ function getBlock(kind: BlockKind) {
             return makeBlock(
                 kind,
                 assets.image`timesFour`,
+                "Times Four",
                 "Execute the next action four times",
                 100
             );
@@ -168,6 +187,7 @@ function getBlock(kind: BlockKind) {
             return makeBlock(
                 kind,
                 assets.image`aim`,
+                "Aim",
                 "Rotate towards the nearest enemy",
                 500
             );

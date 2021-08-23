@@ -50,14 +50,16 @@ class ScriptRenderer {
     `;
     protected currIndex: number;
     protected editMode: boolean;
+    protected infoHidden: boolean;
 
     constructor(protected character: Character) {
-        this.renderable = scene.createRenderable(11, (target, camera) => {
+        this.renderable = scene.createRenderable(98, (target, camera) => {
             this.draw(target, camera);
         });
 
         this.currIndex = this.character.script.length();
         this.editMode = true;
+        this.updateInfo();
     }
 
     public get width() {
@@ -148,7 +150,9 @@ class ScriptRenderer {
                 }
             }
             target.drawImage(ScriptRenderer.startImg, startLeft, top);
+            this.drawInfoBox(target);
         }
+
     }
 
     destroy() {
@@ -179,15 +183,47 @@ class ScriptRenderer {
 
     upButtonDown() { 
         this.currIndex = 0;
+        this.updateInfo();
     }
     downButtonDown() {
         this.currIndex = this.maxIndex();
+        this.updateInfo();
     }
     leftButtonDown() {
         this.currIndex = Math.max(this.currIndex - 1, 0);
+        this.updateInfo();
     }
     rightButtonDown() {
         this.currIndex = Math.min(this.currIndex + 1, this.maxIndex());
+        this.updateInfo();
+    }
+
+    updateInfo() {
+        if (this.character.script.held) {
+            story.clearAllText();
+            return;
+        }
+        if (this.currIndex < this.character.script.length()) {
+            const start = this.character.script.currentStartIndex();
+
+            const block = this.character.script.current[this.currIndex - start] || this.character.script.bag[this.currIndex];
+
+            if (block) {
+                this.hideInfo(false);
+                this.setInfoText(block.name, block.description)
+            }
+            else {
+                this.hideInfo(true);
+            }
+        }
+        else {
+            this.setInfoText("Start", "Begin the battle!")
+        }
+    }
+
+    hideInfo(hidden: boolean) {
+        this.infoHidden = hidden;
+        if (hidden) story.clearAllText();
     }
 
     protected maxIndex(): number {
@@ -198,12 +234,34 @@ class ScriptRenderer {
         const script = this.character.script;
         if (script.held) {
             script.release(this.currIndex);
+            this.updateInfo();
         } else if (this.currIndex === script.length()) {
             this.editMode = false;
+            story.clearAllText();
             return true;
         } else {
+            this.hideInfo(true);
             script.grab(this.currIndex);
         }
         return false;
+    }
+
+    drawInfoBox(target: Image) {
+        if (this.infoHidden) return;
+        const top = 38;
+        target.fillRect(10, top, 100, 40, 0xc)
+        target.fillRect(11, top + 1, 98, 38, 0xd)
+        target.fillRect(13, top + 11, 94, 1, 0xb)
+    }
+
+    setInfoText(title: string, description: string) {
+        story.clearAllText();
+        story.setPagePauseLength(9999999, 9999999);
+        control.runInParallel(() => {
+            story.printDialog(title, 18, 73, 90, 16, 0xc, 0, story.TextSpeed.VeryFast);
+        })
+        control.runInParallel(() => {
+            story.printDialog(description, 60, 93, 90, 100, 0xc, 0, story.TextSpeed.VeryFast);
+        })
     }
 }

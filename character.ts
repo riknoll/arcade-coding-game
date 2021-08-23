@@ -46,7 +46,11 @@ class Character {
         this.heading = 269;
         this.attackImage = image.create(32, 32);
         this.attackSprite = sprites.create(this.attackImage, isEnemy ? SpriteKind.EnemyAttack : SpriteKind.PlayerAttack);
+        this.attackSprite.setFlag(SpriteFlag.GhostThroughWalls, true);
         
+        this.sprite.z = 10;
+        this.attackSprite.z = 1;
+
         this.attackSprite.data["character"] = this;
         characters.push(this);
         let statusbar = statusbars.create(10, 1, StatusBarKind.Health)

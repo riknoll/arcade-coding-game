@@ -7,16 +7,26 @@ function runBattle(player: Character, tm: tiles.TileMapData) {
     }
     statusbars.getStatusBarAttachedTo(StatusBarKind.Health, player.sprite).value = 9999;
 
+    const enemyTiles = [
+        assets.tile`bad guy 1`,
+        assets.tile`bad guy 2`,
+        assets.tile`bad guy 3`,
+        assets.tile`bad guy 4`,
+        assets.tile`bad guy 5`,
+        assets.tile`bad guy 6`,
+    ]
+
     tiles.placeOnRandomTile(player.sprite, assets.tile`player start`);
 
     const enemies: Character[] = [];
+    let enemySpawns: tiles.Location[] = [];
 
-    const enemySpawns = tiles.getTilesByType(assets.tile`bad guy 1`)
-        .concat(tiles.getTilesByType(assets.tile`bad guy 2`))
-        .concat(tiles.getTilesByType(assets.tile`bad guy 3`))
-        .concat(tiles.getTilesByType(assets.tile`bad guy 4`))
-        .concat(tiles.getTilesByType(assets.tile`bad guy 5`))
-        .concat(tiles.getTilesByType(assets.tile`bad guy 6`))
+    for (const tile of enemyTiles) {
+        enemySpawns = enemySpawns.concat(tiles.getTilesByType(tile));
+        tiles.coverAllTiles(tile, assets.tile`myTile1`)
+    }
+
+    tiles.coverAllTiles(assets.tile`player start`, assets.tile`myTile1`)
 
     for (const tile of enemySpawns) {
         enemies.push(createEnemyAtLocation(tile));
@@ -33,13 +43,13 @@ function runBattle(player: Character, tm: tiles.TileMapData) {
     function startScript() {
         let cancellationToken = () => battleComplete;
         control.runInParallel(() => {
-            player.execute(cancellationToken)
-        })
+            player.execute(cancellationToken);
+        });
 
         for (const enemy of enemies) {
             control.runInParallel(() => {
                 enemy.execute(cancellationToken);
-            })
+            });
         }
     }
 

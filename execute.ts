@@ -73,6 +73,8 @@ function executeMove(character: Character, action: Block) {
 function executeTurn(character: Character, action: Block) {
     let targetAngle: number;
 
+    character.heading = normalizeAngle(character.heading);
+
     switch (action.kind) {
         case BlockKind.TurnClockwise:
             targetAngle = character.heading + 45;
@@ -84,19 +86,31 @@ function executeTurn(character: Character, action: Block) {
             targetAngle = character.heading + Math.randomRange(-60, 60);
             break;
         case BlockKind.Aim:
-            // TODO
-            targetAngle = character.heading;
+            const target = findClosestSprite(character.sprite, sprites.allOfKind(character.isEnemy ? SpriteKind.Player : SpriteKind.Enemy))
+            targetAngle = Math.atan2(target.y - character.sprite.y, target.x - character.sprite.x) * 180 / Math.PI;
             break;
     }
 
+    targetAngle = normalizeAngle(targetAngle);
+
+    if (Math.abs(targetAngle - character.heading) > 180) {
+        if (targetAngle < character.heading) {
+            targetAngle += 360;
+        }
+        else {
+            character.heading += 360
+        }
+    }
+
     const steps = 10;
-    const pauseLength = action.duration / steps;
     const slice = (targetAngle - character.heading) / steps;
+    const pauseLength = action.duration / steps;
 
     for (let i = 0; i < steps; i++) {
         character.heading += slice;
         pause(pauseLength)
     }
+    character.heading = normalizeAngle(targetAngle);
 }
 
 function executeMeleeAttack(character: Character, action: Block) {
