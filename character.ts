@@ -35,6 +35,8 @@ class Character {
 
     modifiers: number;
 
+    repeats: number;
+
     constructor(public isEnemy: boolean) {
         this.sprite = sprites.create(isEnemy ? assets.image`enemyImage` : assets.image`playerImage`, isEnemy ? SpriteKind.Enemy : SpriteKind.Player);
         this.renderable = scene.createRenderable(10, (target: Image, camera: scene.Camera) => {
@@ -44,7 +46,7 @@ class Character {
         this.sprite.data["character"] = this;
 
         this.heading = 269;
-        this.attackImage = image.create(32, 32);
+        this.attackImage = image.create(48, 48);
         this.attackSprite = sprites.create(this.attackImage, isEnemy ? SpriteKind.EnemyAttack : SpriteKind.PlayerAttack);
         this.attackSprite.setFlag(SpriteFlag.GhostThroughWalls, true);
         
@@ -55,8 +57,10 @@ class Character {
         characters.push(this);
         let statusbar = statusbars.create(10, 1, StatusBarKind.Health)
         statusbar.attachToSprite(this.sprite, 1, 0)
+        statusbar.z = 11;
         this.invincibleEndTime = 0;
         this.modifiers = 0;
+        this.repeats = 0;
     }
 
     update() {
@@ -106,10 +110,16 @@ class Character {
     execute(cancellationToken: () => boolean) {
         while (true) {
             for (const action of this.script.current) {
-                this.currentAction = action;
-                this.attackSprite.data["action"] = action;
-                executeAction(this, action);
-                if (cancellationToken() || !this.sprite) return;
+                if (!this.repeats) this.repeats = 1;
+
+                for (let r = this.repeats; r > 0; r--) {
+                    this.currentAction = action;
+                    this.attackSprite.data["action"] = action;
+                    executeAction(this, action);
+                    if (cancellationToken() || !this.sprite) return;
+                }
+
+                if (action.kind !== BlockKind.TimesTwo && action.kind !== BlockKind.TimesThree && action.kind !== BlockKind.TimesFour) this.repeats = 0;
             }
         }
     }

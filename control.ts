@@ -18,16 +18,24 @@ function registerRendererControls(renderer: Screen, startBattle: () => void) {
         }
     });
     registerHandler(controller.up, () => {
-        renderer.upButtonDown();
+        if (battleStarted) {
+            scriptTimeModifier -= 0.1;
+
+            if (scriptTimeModifier < 0.1) scriptTimeModifier = 0.1
+        }
+        else renderer.upButtonDown();
     });
     registerHandler(controller.down, () => {
-        renderer.downButtonDown();
+        if (battleStarted) {
+            scriptTimeModifier += 0.1;
+        }
+        else renderer.downButtonDown();
     });
     registerHandler(controller.left, () => {
-        renderer.leftButtonDown();
+        if (!battleStarted) renderer.leftButtonDown();
     });
     registerHandler(controller.right, () => {
-        renderer.rightButtonDown();
+        if (!battleStarted) renderer.rightButtonDown();
     });
 
     function registerHandler(
@@ -36,9 +44,7 @@ function registerRendererControls(renderer: Screen, startBattle: () => void) {
         evt = ControllerButtonEvent.Pressed
     ) {
         btn.onEvent(evt, () => {
-            if (!battleStarted) {
-                handler();
-            }
+            handler();
         })
     }
 }

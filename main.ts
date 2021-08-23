@@ -1,5 +1,5 @@
 
-let scriptTimeModifier = 0.2
+let scriptTimeModifier = 1
 
 scene.setBackgroundColor(13)
 
@@ -13,9 +13,7 @@ player.script = new ScriptBag([
 ]);
 
 player.setModifier(Modifier.DeflectOnWalls, true);
-player.setModifier(Modifier.BouncyArrows, false);
-
-
+player.setModifier(Modifier.ExtendedMelee, false);
 
 const levels = [
     assets.tilemap`level1`,

@@ -34,6 +34,7 @@ function dealDamage(attacker: Character, attacked: Character, action: Block, ang
     if (control.millis() < attacked.invincibleEndTime) return;
     
     let damage = 0;
+    let invincibleTime = INVINCIBILITY_TIME;
 
     switch (action.kind) {
         case BlockKind.MeleeAttack:
@@ -44,11 +45,14 @@ function dealDamage(attacker: Character, attacked: Character, action: Block, ang
             break;
         case BlockKind.FireSpell:
         case BlockKind.IceSpell:
+            damage = 1;
+            invincibleTime = 10;
+            break;
         case BlockKind.LightningSpell:
     }
 
     statusbars.getStatusBarAttachedTo(StatusBarKind.Health, attacked.sprite).value -= damage;
-    attacked.invincibleEndTime = control.millis() + INVINCIBILITY_TIME * scriptTimeModifier;
+    attacked.invincibleEndTime = control.millis() + invincibleTime * scriptTimeModifier;
 }
 
 function onArrowHitWall(arrow: Sprite) {

@@ -60,10 +60,12 @@ function runBattle(player: Character, tm: tiles.TileMapData) {
 
     let rewardsSelected = false;
 
+    const currrentBlocks = player.script.bag.concat(player.script.current);
+
     const rewards = new RewardScreen([
-        getBlock(BlockKind.Aim),
-        getArtifact(Modifier.BouncyArrows),
-        getArtifact(Modifier.SpinAttack)
+        getRandomBlock(currrentBlocks),
+        getRandomBlock(currrentBlocks),
+        Math.percentChance(50) ? getRandomBlock(currrentBlocks) : getArtifact(availableRewards[Math.randomRange(0, availableRewards.length - 1)])
     ]);
 
     registerRendererControls(rewards, () => rewardsSelected = true);

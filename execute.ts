@@ -60,12 +60,13 @@ function executeMove(character: Character, action: Block) {
     }
 
     const distance = 16;
-    const speed = distance / (action.duration / 1000);
+    const duration = character.hasModifier(Modifier.FastMove) ? action.duration / 2 : action.duration;
+    const speed = distance / (duration / 1000);
     angle = toRadians(angle);
 
     character.sprite.vx = Math.cos(angle) * speed;
     character.sprite.vy = Math.sin(angle) * speed;
-    pause(action.duration);
+    pause(duration);
     character.sprite.vx = 0;
     character.sprite.vy = 0;
 }
@@ -104,7 +105,8 @@ function executeTurn(character: Character, action: Block) {
 
     const steps = 10;
     const slice = (targetAngle - character.heading) / steps;
-    const pauseLength = action.duration / steps;
+    const duration = character.hasModifier(Modifier.FastTurn) ? action.duration / 2 : action.duration;
+    const pauseLength = duration/ steps;
 
     for (let i = 0; i < steps; i++) {
         character.heading += slice;
@@ -114,14 +116,17 @@ function executeTurn(character: Character, action: Block) {
 }
 
 function executeMeleeAttack(character: Character, action: Block) {
-    const sweep = 140;
-    const steps = 20;
+    const sweep = character.hasModifier(Modifier.SpinAttack) ? 360 : 140;
+    const steps = character.hasModifier(Modifier.SpinAttack) ? 40 : 20;
+    const duration = character.hasModifier(Modifier.SpinAttack) ? action.duration * 1.5 : action.duration;
     const slice = toRadians(sweep / steps);
-    const pauseLength = action.duration / steps;
+    const pauseLength = duration / steps;
 
     const ox = character.attackImage.width >> 1;
     const oy = character.attackImage.height >> 1;
     const handleOffset = toRadians(21);
+
+    const radius = character.hasModifier(Modifier.ExtendedMelee) ? 23 : 15;
 
     let angle = toRadians(character.heading - (sweep >> 1));
     for (let i = 0; i < steps; i++) {
@@ -130,8 +135,8 @@ function executeMeleeAttack(character: Character, action: Block) {
             character.attackImage,
             ox + Math.cos(angle) * 9,
             oy + Math.sin(angle) * 9,
-            ox + Math.cos(angle) * 15,
-            oy + Math.sin(angle) * 15,
+            ox + Math.cos(angle) * radius,
+            oy + Math.sin(angle) * radius,
             1
         );
 
@@ -141,7 +146,7 @@ function executeMeleeAttack(character: Character, action: Block) {
             oy + Math.sin(angle) * 4,
             ox + Math.cos(angle) * 8,
             oy + Math.sin(angle) * 8,
-            8
+            character.hasModifier(Modifier.ExtendedMelee) ? 14 : 8
         );
 
         // Hand guard
@@ -150,7 +155,7 @@ function executeMeleeAttack(character: Character, action: Block) {
             oy + Math.sin(angle - handleOffset) * 8,
             ox + Math.cos(angle + handleOffset) * 8,
             oy + Math.sin(angle + handleOffset) * 8,
-            8
+            character.hasModifier(Modifier.ExtendedMelee) ? 14 : 8
         );
 
 
@@ -170,7 +175,22 @@ function executeFireSpell(character: Character, action: Block) {
 }
 
 function executeIceSpell(character: Character, action: Block) {
-
+    character.attackImage.fillCircle(
+        character.attackImage.width >> 1,
+        character.attackImage.height >> 1,
+        character.attackImage.width >> 1,
+        8
+    );
+    character.attackImage.fillCircle(
+        character.attackImage.width >> 1,
+        character.attackImage.height >> 1,
+        (character.attackImage.width >> 1) - 2,
+        9
+    );
+    character.sprite.startEffect(effects.blizzard, action.duration * scriptTimeModifier)
+    character.attackSprite.z
+    pause(action.duration * scriptTimeModifier);
+    character.attackImage.fill(0);
 }
 
 function executeLightningSpell(character: Character, action: Block) {
@@ -178,7 +198,8 @@ function executeLightningSpell(character: Character, action: Block) {
 }
 
 function executeGuard(character: Character, action: Block) {
-
+    character.invincibleEndTime += action.duration;
+    pause(action.duration);
 }
 
 function executeWait(character: Character, action: Block) {
@@ -186,5 +207,18 @@ function executeWait(character: Character, action: Block) {
 }
 
 function executeMultiplier(character: Character, action: Block) {
-    
+    character.repeats = character.repeats || 1;
+    switch (action.kind) {
+        case BlockKind.TimesTwo:
+            character.repeats += 1;
+            break;
+        case BlockKind.TimesThree:
+            character.repeats += 2;
+            break;
+        case BlockKind.TimesFour:
+            character.repeats += 3;
+            break;
+    }
+
+    pause(action.duration);
 }

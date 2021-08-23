@@ -29,7 +29,7 @@ function createBadGuy1() {
     const enemy = new Character(true);
     enemy.heading = 90;
     enemy.script = new ScriptBag([
-        getBlock(BlockKind.Aim),
+        getBlock(BlockKind.TurnRandom),
         getBlock(BlockKind.Wait),
         getBlock(BlockKind.RangedAttack)
     ]);

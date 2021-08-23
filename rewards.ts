@@ -74,7 +74,8 @@ class RewardScreen implements Screen {
         this.renderable = scene.createRenderable(90, (target: Image, camera: scene.Camera) => {
             this.draw(target, camera);
         })
-        this.currIndex = 0;
+        this.currIndex = 1;
+        this.setInfoText(this.rewards[this.currIndex].name, this.rewards[this.currIndex].description)
     }
 
     public get width() {
