@@ -1,6 +1,6 @@
 
 function runBattle(player: Character, tm: tiles.TileMapData) {
-    scene.setTileMapLevel(tm)
+    tiles.loadMap(tiles.createMap(tm));
 
     for (const sprite of sprites.allOfKind(SpriteKind.Enemy)) {
         getCharacterData(sprite).destroy();

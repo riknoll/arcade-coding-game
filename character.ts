@@ -3,6 +3,10 @@ namespace SpriteKind {
     export const PlayerArrow = create();
     export const EnemyAttack = create();
     export const EnemyArrow = create();
+    export const PlayerFireball = create();
+    export const EnemyFireball = create();
+    export const PlayerLightning = create();
+    export const EnemyLightning = create();
 }
 
 let characters: Character[] = [];

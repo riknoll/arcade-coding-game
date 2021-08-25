@@ -6,21 +6,21 @@ scene.setBackgroundColor(13)
 
 const player = new Character(false);
 player.script = new ScriptBag([
-    getBlock(BlockKind.MoveForward),
-    getBlock(BlockKind.MeleeAttack),
-    getBlock(BlockKind.RangedAttack),
-    getBlock(BlockKind.TurnCounterClockwise),
+    // getBlock(BlockKind.MoveForward),
+    // getBlock(BlockKind.MeleeAttack),
+    getBlock(BlockKind.Aim),
+    getBlock(BlockKind.LightningSpell),
 ]);
 
 player.setModifier(Modifier.DeflectOnWalls, true);
 player.setModifier(Modifier.ExtendedMelee, false);
 
 const levels = [
+    assets.tilemap`level5`,
     assets.tilemap`level1`,
     assets.tilemap`level2`,
     assets.tilemap`level3`,
     assets.tilemap`level4`,
-    assets.tilemap`level5`,
 ]
 
 control.runInParallel(() => {

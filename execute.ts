@@ -167,11 +167,20 @@ function executeMeleeAttack(character: Character, action: Block) {
 
 function executeRangedAttack(character: Character, action: Block) {
     const arrow = new Arrow(character, 40 / scriptTimeModifier);
-    pause(action.duration);
+    pause(action.duration * scriptTimeModifier);
 }
 
 function executeFireSpell(character: Character, action: Block) {
-
+    const fireball = sprites.create(assets.image`fireProjectile`, character.isEnemy ? SpriteKind.EnemyFireball : SpriteKind.PlayerFireball);
+    fireball.setVelocity(
+        100 * Math.cos(toRadians(character.heading)),
+        100 * Math.sin(toRadians(character.heading))
+    );
+    fireball.x = character.sprite.x;
+    fireball.y = character.sprite.y;
+    fireball.data["character"] = character;
+    fireball.data["action"] = action;
+    pause(action.duration * scriptTimeModifier);
 }
 
 function executeIceSpell(character: Character, action: Block) {
@@ -194,7 +203,20 @@ function executeIceSpell(character: Character, action: Block) {
 }
 
 function executeLightningSpell(character: Character, action: Block) {
-
+    const lightning = sprites.create(assets.image`fireProjectile`, character.isEnemy ? SpriteKind.EnemyLightning : SpriteKind.PlayerLightning);
+    lightning.setVelocity(
+        500 * Math.cos(toRadians(character.heading)),
+        500 * Math.sin(toRadians(character.heading))
+    );
+    lightning.x = character.sprite.x;
+    lightning.y = character.sprite.y;
+    lightning.data["character"] = character;
+    lightning.data["action"] = action;
+    lightning.data["chain"] = 3;
+    lightning.setFlag(SpriteFlag.Invisible, true);
+    lightning.setFlag(SpriteFlag.AutoDestroy, true);
+    lightning.setFlag(SpriteFlag.GhostThroughWalls, true);
+    pause(action.duration * scriptTimeModifier);
 }
 
 function executeGuard(character: Character, action: Block) {

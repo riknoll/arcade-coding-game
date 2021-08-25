@@ -28,7 +28,8 @@
         "enemy.ts",
         "scriptBag.ts",
         "control.ts",
-        "rewards.ts"
+        "rewards.ts",
+        "lightningSprite.ts"
     ],
     "testFiles": [
         "test.ts"

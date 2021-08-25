@@ -24,7 +24,7 @@ function getCharacterData(sprite: Sprite): Character {
 }
 
 function findClosestSprite(sprite: Sprite, others: Sprite[]) {
-    let min = 9999;
+    let min = 9999999999;
     let closest: Sprite;
 
     for (const otherSprite of others) {
